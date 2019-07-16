@@ -18,8 +18,16 @@ state = open
 GPIO.setup(LED, GPIO.OUT, initial=GPIO.LOW)
 
 while True:
+	hour = datetime.datetime.now().hour
+	print "hour =", hour
+	if (hour > 6 and hour <= 21):
+		timeGood = 1
+	else:
+		timeGood = 0
+	print "timeGood =", timeGood
+	
 	Reed1 = GPIO.input(PROX1)
-	if Reed1 == closed and state == open:
+	if Reed1 == closed and state == open and timeGood == 1:
 		GPIO.output(LED, 1)
 		print("switch closed")
 		state = closed
@@ -33,8 +41,8 @@ while True:
 			camera.capture("/media/exfat/TimeLapse6/"+ date +".jpg")
 			print("Picture Taken")
 			time.sleep(20)
-		GPIO.output(LED, 0)
-	elif Reed1 == open and state == closed:
+			GPIO.output(LED, 0)
+	elif Reed1 == open and state == closed and timeGood == 0:
 		print("switch open")
 		state = open
 	time.sleep(5)
