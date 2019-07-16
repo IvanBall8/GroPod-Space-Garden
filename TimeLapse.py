@@ -30,7 +30,7 @@ while True:
 			date = datetime.datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
 			camera.start_preview()
 			time.sleep(5)
-			camera.capture("/home/pi/TimeLapse5/"+ date +".jpg")
+			camera.capture("/home/pi/TimeLapse6/"+ date +".jpg")
 			print("Picture Taken")
 			time.sleep(1000)
 		GPIO.output(LED, 0)
