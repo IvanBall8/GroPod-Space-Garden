@@ -37,7 +37,7 @@ while True:
 			camera.vflip = True
 			date = datetime.datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
 			camera.start_preview()
-			time.sleep(5)
+			time.sleep(2)
 			camera.capture("/media/exfat/TimeLapse6/"+ date +".jpg")
 			print("Picture Taken")
 			time.sleep(20)
