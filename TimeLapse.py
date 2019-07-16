@@ -22,7 +22,7 @@ while True:
 	print "hour =", hour
 	if (hour > 6 and hour <= 21):
 		timeGood = 1
-	else:
+	elif hour>21 and hour<=5:
 		timeGood = 0
 	print "timeGood =", timeGood
 	
