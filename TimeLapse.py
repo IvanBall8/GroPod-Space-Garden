@@ -32,10 +32,10 @@ while True:
 			time.sleep(5)
 			camera.capture("/home/pi/TimeLapse6/"+ date +".jpg")
 			print("Picture Taken")
-			time.sleep(1000)
+			time.sleep(20)
 		GPIO.output(LED, 0)
 	elif Reed1 == open and state == closed:
 		print("switch open")
 		state = open
-	time.sleep(50)
+	time.sleep(5)
   
