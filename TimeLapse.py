@@ -9,13 +9,13 @@ GPIO.setmode(GPIO.BCM)
 PROX1 = 5
 LED = 17
 
+GPIO.setwarnings(False)
+
 GPIO.setup(PROX1, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 open = 1
 closed = 0
 state = open
 GPIO.setup(LED, GPIO.OUT, initial=GPIO.LOW)
-
-GPIO.setwarnings(False)
 
 while True:
 	Reed1 = GPIO.input(PROX1)
