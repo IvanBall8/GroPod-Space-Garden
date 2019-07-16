@@ -42,7 +42,7 @@ while True:
 			print("Picture Taken")
 			time.sleep(20)
 			GPIO.output(LED, 0)
-	elif Reed1 == open and state == closed and timeGood == 0:
+	elif Reed1 == open and state == closed:
 		print("switch open")
 		state = open
 	time.sleep(5)
