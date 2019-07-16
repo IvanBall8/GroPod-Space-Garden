@@ -15,6 +15,8 @@ closed = 0
 state = open
 GPIO.setup(LED, GPIO.OUT, initial=GPIO.LOW)
 
+GPIO.setwarnings(False)
+
 while True:
 	Reed1 = GPIO.input(PROX1)
 	if Reed1 == closed and state == open:
