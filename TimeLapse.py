@@ -17,6 +17,8 @@ closed = 0
 state = open
 GPIO.setup(LED, GPIO.OUT, initial=GPIO.LOW)
 
+time.sleep(5)
+
 while True:
 	hour = datetime.datetime.now().hour
 	print "hour =", hour
