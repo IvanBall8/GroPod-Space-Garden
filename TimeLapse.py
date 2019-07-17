@@ -2,7 +2,7 @@
 
 import time
 import datetime
-import picamera
+from picamera import PiCamera
 import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)
@@ -19,7 +19,7 @@ GPIO.setup(LED, GPIO.OUT, initial=GPIO.LOW)
 
 time.sleep(1)
 
-camera = picamera.PiCamera()
+camera = PiCamera()
 
 while True:
 	hour = datetime.datetime.now().hour
