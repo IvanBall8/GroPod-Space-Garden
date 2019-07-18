@@ -34,25 +34,28 @@ while True:
 		print("switch closed")
 		state = closed
 		time.sleep(1)
-		with picamera.PiCamera() as camera:
-			print "1"
-			camera.resolution = (2592, 1944)
-			print "2"
-			camera.vflip = True
-			print "3"
-			date = datetime.datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
-			print "4"
-			camera.start_preview()
-			print "5"
-			time.sleep(2)
-			print "6"
-			camera.capture("/media/exfat/TimeLapse6/"+ date +".jpg")
-			print "7"
-			print("Picture Taken")
-			camera.stop_preview()
-			print "8"
-			time.sleep(20)
-			GPIO.output(LED, 0)
+		try:
+			with picamera.PiCamera() as camera:
+				print "1"
+				camera.resolution = (2592, 1944)
+				print "2"
+				camera.vflip = True
+				print "3"
+				date = datetime.datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
+				print "4"
+				camera.start_preview()
+				print "5"
+				time.sleep(2)
+				print "6"
+				camera.capture("/media/exfat/TimeLapse6/"+ date +".jpg")
+				print "7"
+				print("Picture Taken")
+				camera.stop_preview()
+				print "8"
+				time.sleep(20)
+				GPIO.output(LED, 0)
+		except PiCameraMMALError:
+			print('Raised PiCameraMMALError')
 	elif Reed1 == open and state == closed:
 		print("switch open")
 		state = open
