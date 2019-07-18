@@ -2,7 +2,7 @@
 
 import time
 import datetime
-from picamera import PiCamera as camera
+from picamera import PiCamera
 import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)
@@ -19,8 +19,6 @@ GPIO.setup(LED, GPIO.OUT, initial=GPIO.LOW)
 
 time.sleep(1)
 
-#camera = PiCamera()
-
 while True:
 	hour = datetime.datetime.now().hour
 	print "hour =", hour
@@ -36,6 +34,7 @@ while True:
 		print("switch closed")
 		state = closed
 		time.sleep(1)
+		camera = PiCamera()
 		print "1"
 		camera.resolution = (2592, 1944)
 		print "2"
