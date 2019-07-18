@@ -54,7 +54,7 @@ while True:
 				print "8"
 				time.sleep(20)
 				GPIO.output(LED, 0)
-		except PiCameraMMALError:
+		except picamera.PiCameraMMALError:
 			print('Raised PiCameraMMALError')
 	elif Reed1 == open and state == closed:
 		print("switch open")
