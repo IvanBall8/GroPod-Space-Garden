@@ -38,6 +38,8 @@ while True:
 			with picamera.PiCamera() as camera:
 				print "1"
 				camera.resolution = (2592, 1944)
+				print "1.2"
+				camera.shutter_speed = 33334
 				print "2"
 				camera.vflip = True
 				print "3"
