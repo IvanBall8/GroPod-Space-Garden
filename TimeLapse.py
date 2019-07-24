@@ -21,18 +21,18 @@ time.sleep(1)
 
 while True:
 	hour = datetime.datetime.now().hour
-	print "hour =", hour
 	if (hour > 6 and hour <= 21):
 		timeGood = 1
 	elif hour>21 and hour<=5:
 		timeGood = 0
-	print "timeGood =", timeGood
 	
 	Reed1 = GPIO.input(PROX1)
 	if Reed1 == closed and state == open and timeGood == 1:
 		GPIO.output(LED, 1)
 		print("switch closed")
 		state = closed
+		print "Time" , datetime.datetime.now()
+		print "timeGood =", timeGood
 		time.sleep(1)
 		try:
 			with picamera.PiCamera() as camera:
