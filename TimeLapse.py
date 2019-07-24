@@ -42,7 +42,7 @@ while True:
 				camera.shutter_speed = 33334
 				#camera.shutter_speed = 16666
 				print "2"
-				camera.vflip = True
+				camera.vflip = False
 				print "3"
 				date = datetime.datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
 				print "4"
