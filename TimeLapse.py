@@ -37,7 +37,8 @@ while True:
 		time.sleep(1)
 		date = datetime.datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
 		os.system('fswebcam -r 2592x1944 -S 3 --jpeg 50 --set brightness=98% --save /media/exfat/TimeLapse6/%m_%d_%Y_%H_%M_%S".jpg'
-		
+		time.sleep(1)
+		os.system('pkill fswebcam')
 		"""
 		try:
 			with picamera.PiCamera() as camera:
