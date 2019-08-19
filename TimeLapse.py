@@ -4,6 +4,7 @@ import time
 import datetime
 import picamera
 import RPi.GPIO as GPIO
+import os 
 
 GPIO.setmode(GPIO.BCM)
 PROX1 = 5
@@ -34,6 +35,10 @@ while True:
 		print "Time" , datetime.datetime.now()
 		print "timeGood =", timeGood
 		time.sleep(1)
+		date = datetime.datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
+		os.system('fswebcam -r 2592x1944 -S 3 --jpeg 50 --set brightness=98% --save /media/exfat/TimeLapse6/"+ date +".jpg')
+		
+		"""
 		try:
 			with picamera.PiCamera() as camera:
 				print "1"
@@ -59,6 +64,7 @@ while True:
 				GPIO.output(LED, 0)
 		except picamera.PiCameraMMALError:
 			print('Raised PiCameraMMALError')
+		"""
 	elif Reed1 == open and state == closed:
 		print("switch open")
 		state = open
