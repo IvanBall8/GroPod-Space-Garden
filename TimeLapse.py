@@ -36,9 +36,10 @@ while True:
 		print "timeGood =", timeGood
 		time.sleep(1)
 		#date = datetime.datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
-		#os.system('fswebcam -r 2592x1944 -S 3 --jpeg 50 --set brightness=98% --save /media/exfat/TimeLapse6/%m_%d_%Y_%H_%M_%S".jpg'
+		os.system('fswebcam -r 2592x1944 -S 3 --jpeg 50 --set brightness=98% --delay 3 --save /media/exfat/TimeLapse6/%s.jpeg" %datetime.datetime.now().strftime("%m_%d_%Y_%H_%M_%S"))
 		#time.sleep(1)
 		#os.system('pkill fswebcam')
+		"""
 		try:
 			with picamera.PiCamera() as camera:
 				print "1"
@@ -64,6 +65,7 @@ while True:
 				GPIO.output(LED, 0)
 		except picamera.PiCameraMMALError:
 			print('Raised PiCameraMMALError')
+		"""
 	elif Reed1 == open and state == closed:
 		print("switch open")
 		state = open
