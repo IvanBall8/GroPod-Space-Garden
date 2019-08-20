@@ -36,7 +36,7 @@ while True:
 		print "timeGood =", timeGood
 		time.sleep(1)
 		date = datetime.datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
-		os.system("fswebcam -r 2592x1944 -S 3 --jpeg 50 --set brightness=98% --delay 3 --save /media/exfat/TimeLapse6/"+ date +".jpg")
+		os.system("fswebcam -r 2592x1944 -S 3 --jpeg 50 --set brightness=50% --delay 3 --save /media/exfat/TimeLapse6/"+ date +".jpg")
 		#time.sleep(1)
 		#os.system('pkill fswebcam')
 		"""
