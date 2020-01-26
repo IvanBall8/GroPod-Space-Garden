@@ -25,6 +25,7 @@ pumpState = 1
 pumpSched = 5
 pumpTime = 60
 door = 25
+drawer = 22
 opened = True
 closed = False
 doorDim = 0
