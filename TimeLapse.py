@@ -119,7 +119,7 @@ def LED():
 		DIM1.ChangeDutyCycle(doorDim)
 	else:
 		DIM1.ChangeDutyCycle(dim1Duty)	
-	GPIO.output(led1, ledState)
+	GPIO.output(led, ledState)
 
 def Fan1():
 	fan1State = True
@@ -229,7 +229,7 @@ while True:
 	GPIO.output(fan1, fan1State)
 	GPIO.output(fan2, fan2State)
 	GPIO.output(fan3, fan3State)
-	LED()
+	GPIO.output(led, ledState)
 	motor = Motor()
 	schedule.run_pending()
 	time.sleep(0.4)
