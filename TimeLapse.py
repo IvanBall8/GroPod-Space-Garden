@@ -102,10 +102,10 @@ def Motor():
 	GPIO.output(motorEN, GPIO.HIGH)
 	
 def Pump():
-	pumpState = True
-	if GPIO.input(door)==opened or GPIO.input(drawer)==opened:
+	pumpState = false
+	if GPIO.input(door)==opened:
 		GPIO.output(pump, on)
-	elif GPIO.input(door)==closed and GPIO.input(drawer)==closed and pumpState == off:	
+	elif GPIO.input(door)==closed:	
 		GPIO.output(pump, off)
 		time.sleep(pumpTime)
 		print("Pump running")
