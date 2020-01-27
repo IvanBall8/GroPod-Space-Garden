@@ -21,7 +21,6 @@ valve = 23
 relay = 20
 pump = 4
 flow = 111
-pumpState = 1
 pumpSched = 5
 pumpTime = 60
 door = 25
@@ -106,7 +105,7 @@ def Motor():
 def Pump():
 	if GPIO.input(door)==opened:
 		GPIO.output(pump, off)
-	elif GPIO.input(door)==closed and pumpState == on:	
+	elif GPIO.input(door)==closed:	
 		GPIO.output(pump, on)
 		time.sleep(pumpTime)
 		print("Pump running")
@@ -217,7 +216,7 @@ GPIO.setup(pump, GPIO.OUT)
 
 GPIO.add_event_detect(door, GPIO.RISING)
 GPIO.add_event_callback(door, doorOpen)
-
+GPIO.output(pump, off)
 schedule.every(pumpSched).minutes.do(Pump)
 
 while True:
