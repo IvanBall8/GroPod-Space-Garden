@@ -207,10 +207,10 @@ def Level():
 def doorOpen(door):
 	DIM1.ChangeDutyCycle(doorDim)
 	DIM2.ChangeDutyCycle(doorDim)
-	GPIO.output(pump, off)
+	GPIO.output(pump, true)
 
 def drawerOpen(drawer):
-	GPIO.output(pump, off)
+	GPIO.output(pump, true)
 	
 GPIO.setup(led, GPIO.OUT)
 GPIO.setup(fan1, GPIO.OUT)
