@@ -229,10 +229,11 @@ while True:
 	GPIO.output(fan1, fan1State)
 	GPIO.output(fan2, fan2State)
 	GPIO.output(fan3, fan3State)
-	GPIO.output(led, ledState)
+	#GPIO.output(led, ledState)
 	motor = Motor()
 	schedule.run_pending()
 	time.sleep(0.4)
+	"""
 	hour = datetime.datetime.now().hour
 	if (hour > 6 and hour <= 21):
 		timeGood = 1
@@ -253,7 +254,7 @@ while True:
 	elif Reed1 == open and state == closed:
 		print("switch open")
 		state = open
-
+	"""
 # Reset all gpio pin
 #GPIO.cleanup()
   
