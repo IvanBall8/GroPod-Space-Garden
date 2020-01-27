@@ -210,6 +210,12 @@ def doorOpen(door):
 
 def drawerOpen(drawer):
 	GPIO.output(pump, off)
+	
+GPIO.setup(led, GPIO.OUT)
+GPIO.setup(fan1, GPIO.OUT)
+GPIO.setup(fan2, GPIO.OUT)
+GPIO.setup(fan3, GPIO.OUT)
+GPIO.setup(pump, GPIO.OUT)
 
 GPIO.add_event_detect(door, GPIO.RISING)
 GPIO.add_event_callback(door, doorOpen)
