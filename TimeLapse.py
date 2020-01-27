@@ -83,7 +83,7 @@ bus = smbus.SMBus(1)
 
 #--------------------------- Controls ----------------------------
 def Motor():
-	motorState = 1
+	motorState = True
 	GPIO.output(motorEN, GPIO.LOW)
 	if GPIO.input(door)==closed and motorState ==1:
 		GPIO.output(motorDir, CW) #initialize direction of stepper
@@ -99,7 +99,7 @@ def Motor():
 	GPIO.output(motorEN, GPIO.HIGH)
 	
 def Pump():
-	pumpState = 1
+	pumpState = True
 	if GPIO.input(door)==opened or GPIO.input(drawer)==opened:
 		GPIO.output(pump, off)
 	elif GPIO.input(door)==closed and GPIO.input(drawer)==closed and pumpState == on:	
@@ -110,7 +110,7 @@ def Pump():
 		print("Pump off")
 
 def LED():
-	ledState = 1
+	ledState = True
 	if ledState == 0 and GPIO.input(door)== opened:
 		DIM1.ChangeDutyCycle(doorDim)
 	else:
@@ -119,17 +119,17 @@ def LED():
 	GPIO.output(led1, ledState)
 
 def Fan1():
-	fan1State = 1
+	fan1State = True
 	GPIO.output(fan1, fan1State)
 	return fan1State
 	
 def Fan2():
-	fan2State = 1
+	fan2State = True
 	GPIO.output(fan2, fan2State)
 	return fan2State
 	
 def Fan3():
-	fan3State = 1
+	fan3State = True
 	GPIO.output(fan3, fan3State)
 	return fan3State
 	
