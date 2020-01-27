@@ -170,7 +170,7 @@ def Temp_humid():
 		fTemp = round(cTemp * 1.8 + 32, 2)	
 	except OSError:
 		pass
-
+"""
 def Level():
 	try:
 		GPIO.output(LVL_T, False)
@@ -202,7 +202,7 @@ def Level():
 		return 0
 		pass
 	GPIO.cleanup((LVL_T, LVL_E))
-
+"""
 def doorOpen(door):
 	DIM1.ChangeDutyCycle(doorDim)
 	DIM2.ChangeDutyCycle(doorDim)
