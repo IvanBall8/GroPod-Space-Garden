@@ -21,7 +21,6 @@ valve = 23
 relay = 20
 pump = 4
 flow = 111
-pumpState = 1
 pumpSched = 5
 pumpTime = 60
 door = 25
@@ -102,14 +101,13 @@ def Motor():
 	GPIO.output(motorEN, GPIO.HIGH)
 	
 def Pump():
-	pumpState = true
 	if GPIO.input(door)==opened:
-		GPIO.output(pump, true)
+		GPIO.output(pump, 1)
 	elif GPIO.input(door)==closed:	
-		GPIO.output(pump, false)
+		GPIO.output(pump, 0)
 		time.sleep(pumpTime)
 		print("Pump running")
-		GPIO.output(pump, true) 
+		GPIO.output(pump, 1) 
 		print("Pump off")
 
 def LED():
@@ -206,10 +204,6 @@ def Level():
 """
 def doorOpen(door):
 	DIM1.ChangeDutyCycle(doorDim)
-	DIM2.ChangeDutyCycle(doorDim)
-	GPIO.output(pump, true)
-
-def drawerOpen(drawer):
 	GPIO.output(pump, true)
 	
 GPIO.setup(led, GPIO.OUT)
@@ -220,8 +214,6 @@ GPIO.setup(pump, GPIO.OUT)
 
 GPIO.add_event_detect(door, GPIO.RISING)
 GPIO.add_event_callback(door, doorOpen)
-GPIO.add_event_detect(drawer, GPIO.RISING)
-GPIO.add_event_callback(drawer, drawerOpen)
 
 schedule.every(pumpSched).minutes.do(Pump)
 
