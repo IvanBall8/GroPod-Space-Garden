@@ -114,8 +114,7 @@ def LED():
 	if ledState == 0 and GPIO.input(door)== opened:
 		DIM1.ChangeDutyCycle(doorDim)
 	else:
-		DIM1.ChangeDutyCycle(dim1Duty)
-		
+		DIM1.ChangeDutyCycle(dim1Duty)	
 	GPIO.output(led1, ledState)
 
 def Fan1():
@@ -134,7 +133,6 @@ def Fan3():
 	return fan3State
 	
 #--------------------------- Sensors -------------------------------
-
 def PH():
 	val = (((3.5 * mcp.read_adc(1))/310.3) + 2)
 	return round(val, 2)
@@ -248,5 +246,5 @@ while True:
 		state = open
 
 # Reset all gpio pin
-GPIO.cleanup()
+#GPIO.cleanup()
   
