@@ -104,12 +104,12 @@ def Motor():
 def Pump():
 	pumpState = True
 	if GPIO.input(door)==opened or GPIO.input(drawer)==opened:
+		GPIO.output(pump, on)
+	elif GPIO.input(door)==closed and GPIO.input(drawer)==closed and pumpState == off:	
 		GPIO.output(pump, off)
-	elif GPIO.input(door)==closed and GPIO.input(drawer)==closed and pumpState == on:	
-		GPIO.output(pump, pumpState)
 		time.sleep(pumpTime)
 		print("Pump running")
-		GPIO.output(pump, off) 
+		GPIO.output(pump, on) 
 		print("Pump off")
 
 def LED():
