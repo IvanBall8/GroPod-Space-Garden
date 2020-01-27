@@ -45,6 +45,9 @@ FLOW_SENSOR = 12
 PWM0 = 18
 PWM1 = 13
 PROX1 = 5
+fan1State = True
+fan2State = True
+fan3State = True
 #------------------------- Initialize GPIO -------------------------
 # Set GPIO mode: GPIO.BCM or GPIO.BOARD
 GPIO.setmode(GPIO.BCM)
@@ -216,11 +219,10 @@ GPIO.add_event_callback(drawer, drawerOpen)
 schedule.every(pumpSched).minutes.do(Pump)
 
 while True:
-	fan_1 = Fan1()
-	fan_2 = Fan2()
-	fan_3 = Fan3()
-	led_1,dim1 = LED1()
-	led_2,dim2 = LED2()
+	GPIO.output(fan1, fan1State)
+	GPIO.output(fan2, fan2State)
+	GPIO.output(fan3, fan3State)
+	LED()
 	motor = Motor()
 	schedule.run_pending()
 	time.sleep(0.4)
