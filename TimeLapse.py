@@ -114,6 +114,7 @@ def Pump():
 
 def LED():
 	ledState = True
+	dim1Duty = 40
 	if ledState == 0 and GPIO.input(door)== opened:
 		DIM1.ChangeDutyCycle(doorDim)
 	else:
