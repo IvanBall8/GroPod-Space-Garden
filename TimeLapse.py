@@ -21,6 +21,7 @@ valve = 23
 relay = 20
 pump = 4
 flow = 111
+pumpState = 1
 pumpSched = 5
 pumpTime = 60
 door = 25
@@ -47,6 +48,8 @@ PROX1 = 5
 fan1State = True
 fan2State = True
 fan3State = True
+off = 1
+on = 0
 #------------------------- Initialize GPIO -------------------------
 # Set GPIO mode: GPIO.BCM or GPIO.BOARD
 GPIO.setmode(GPIO.BCM)
@@ -102,12 +105,12 @@ def Motor():
 	
 def Pump():
 	if GPIO.input(door)==opened:
-		GPIO.output(pump, 1)
-	elif GPIO.input(door)==closed:	
-		GPIO.output(pump, 0)
+		GPIO.output(pump, off)
+	elif GPIO.input(door)==closed and pumpState == on:	
+		GPIO.output(pump, on)
 		time.sleep(pumpTime)
 		print("Pump running")
-		GPIO.output(pump, 1) 
+		GPIO.output(pump, off) 
 		print("Pump off")
 
 def LED():
