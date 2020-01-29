@@ -13,7 +13,7 @@ import picamera
 import scd30
 
 #------------------------- Create Variables -------------------------
-growPodId = "NASAChallenge" #01GB345H
+#update the pin numbers specific to your hardware GPIO
 led = 17
 fan1 = 7
 fan2 = 6
@@ -273,8 +273,9 @@ while True:
 	Temp_humid()
 	Level()
 	Motor()
+	Camera() #update the storage location within the function
 	schedule.run_pending()
-	time.sleep(0.4)
+	time.sleep(1)
 
 	
 		
