@@ -10,6 +10,7 @@ import json
 import random
 import smbus
 import picamera
+import scd30
 
 #------------------------- Create Variables -------------------------
 growPodId = "NASAChallenge" #01GB345H
@@ -49,6 +50,13 @@ fan2State = True
 fan3State = True
 off = 1
 on = 0
+global flow_cnt
+flow_cnt = 0
+
+PIGPIO_HOST = '::1'
+I2C_SLAVE = 0x61
+I2C_BUS = 1
+
 #------------------------- Initialize GPIO -------------------------
 # Set GPIO mode: GPIO.BCM or GPIO.BOARD
 GPIO.setmode(GPIO.BCM)
@@ -103,6 +111,8 @@ def Motor():
 	GPIO.output(motorEN, GPIO.HIGH)
 	
 def Pump():
+	global flow_cnt
+	flow_cnt = 0
 	if GPIO.input(door)==opened:
 		GPIO.output(pump, off)
 	elif GPIO.input(door)==closed:	
@@ -111,6 +121,7 @@ def Pump():
 		print("Pump running")
 		GPIO.output(pump, off) 
 		print("Pump off")
+		LPM = round(((((flow_cnt/pumpTime)*7.5) + 22.5)/60),2)
 
 def LED():
 	ledState = True
@@ -146,32 +157,39 @@ def EC():
 	return round(val, 2)
 
 def Temp_humid():
-	# SI7021 address, 0x40(64)
-	# 0xF5(245)	Select Relative Humidity NO HOLD master mode
+	sensor = scd30.SCD30(PIGPIO_HOST, I2C_SLAVE, I2C_BUS)
+
+	# trigger continous measurement
+	sensor.sendCommand(scd30.COMMAND_CONTINUOUS_MEASUREMENT, 970)
+
+	# enable autocalibration
+	sensor.sendCommand(scd30.COMMAND_AUTOMATIC_SELF_CALIBRATION, 1)
+
+	sensor.waitForDataReady()
 	try:
-		bus.write_byte(0x40, 0xF5)
-		time.sleep(0.1)
-		# SI7021 address, 0x40(64)
-		# Read data back, 2 bytes, Humidity MSB first
-		data0 = bus.read_byte(0x40)
-		data1 = bus.read_byte(0x40)
-		# Convert the data
-		humidity = round(((data0 * 256 + data1) * 125 / 65536.0) - 6, 2)
-		time.sleep(0.1)
-		# SI7021 address, 0x40(64)
-		# 0xF3(243)	Select temperature NO HOLD master mode
-		bus.write_byte(0x40, 0xF3)
-		time.sleep(0.1)
-		# SI7021 address, 0x40(64)
-		# Read data back, 2 bytes, Temperature MSB first
-		data0 = bus.read_byte(0x40)
-		data1 = bus.read_byte(0x40)
-		# Convert the data
-		cTemp = ((data0 * 256 + data1) * 175.72 / 65536.0) - 46.85
-		fTemp = round(cTemp * 1.8 + 32, 2)	
+		# read measurement
+		data = sensor.readMeasurement()
+
+		if (data == False):
+			exit(1)
+
+		[float_co2, float_T, float_rH] = data
+
+		if float_co2 > 0.0:
+			print("gas_ppm{sensor=\"SCD30\",gas=\"CO2\"} %f" % float_co2)
+
+		print("temperature_degC{sensor=\"SCD30\"} %f" % float_T)
+
+		if float_rH > 0.0:
+			print("humidity_rel_percent{sensor=\"SCD30\"} %f" % float_rH)
 	except OSError:
+		sensor.close()
 		pass
-"""
+
+def Flow(FLOW_SENSOR):
+	global flow_cnt
+	flow_cnt += 1
+	
 def Level():
 	try:
 		GPIO.output(LVL_T, False)
@@ -203,11 +221,35 @@ def Level():
 		return 0
 		pass
 	GPIO.cleanup((LVL_T, LVL_E))
-"""
+
 def doorOpen(door):
 	DIM1.ChangeDutyCycle(doorDim)
 	GPIO.output(pump, true)
 	
+def Camera():
+	try:
+		hour = datetime.datetime.now().hour
+		if (hour > 6 and hour <= 21):
+			timeGood = 1
+		elif hour>21 and hour<=5:
+			timeGood = 0
+		Reed1 = GPIO.input(PROX1)
+		if Reed1 == closed and state == open and timeGood == 1:
+			GPIO.output(LED, 1)
+			print("switch closed")
+			state = closed
+			print "Time" , datetime.datetime.now()
+			print "timeGood =", timeGood
+			time.sleep(1)
+			date = datetime.datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
+			os.system("fswebcam -r 2592x1944 -S 3 --jpeg 50 --delay 3 --set brightness=10% --save /media/exfat/TimeLapse6/"+ date +".jpg")
+
+		elif Reed1 == open and state == closed:
+			print("switch open")
+			state = open
+		except OSError:
+			pass
+			
 GPIO.setup(led, GPIO.OUT)
 GPIO.setup(fan1, GPIO.OUT)
 GPIO.setup(fan2, GPIO.OUT)
@@ -216,39 +258,26 @@ GPIO.setup(pump, GPIO.OUT)
 
 GPIO.add_event_detect(door, GPIO.RISING)
 GPIO.add_event_callback(door, doorOpen)
+GPIO.add_event_detect(FLOW_SENSOR, GPIO.BOTH, callback=Pulse_count, bouncetime=12)
 GPIO.output(pump, off)
 schedule.every(pumpSched).minutes.do(Pump)
 
 while True:
-	GPIO.output(fan1, fan1State)
-	GPIO.output(fan2, fan2State)
-	GPIO.output(fan3, fan3State)
-	#GPIO.output(led, ledState)
-	motor = Motor()
+	#use functions below to add automation to your garden
+	LED() 
+	Fan1()
+	Fan2()
+	Fan3()
+	PH()
+	EC()
+	Temp_humid()
+	Level()
+	Motor()
 	schedule.run_pending()
 	time.sleep(0.4)
-	"""
-	hour = datetime.datetime.now().hour
-	if (hour > 6 and hour <= 21):
-		timeGood = 1
-	elif hour>21 and hour<=5:
-		timeGood = 0
-	
-	Reed1 = GPIO.input(PROX1)
-	if Reed1 == closed and state == open and timeGood == 1:
-		GPIO.output(LED, 1)
-		print("switch closed")
-		state = closed
-		print "Time" , datetime.datetime.now()
-		print "timeGood =", timeGood
-		time.sleep(1)
-		date = datetime.datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
-		os.system("fswebcam -r 2592x1944 -S 3 --jpeg 50 --delay 3 --set brightness=10% --save /media/exfat/TimeLapse6/"+ date +".jpg")
 
-	elif Reed1 == open and state == closed:
-		print("switch open")
-		state = open
-	"""
+	
+		
 # Reset all gpio pin
 #GPIO.cleanup()
   
